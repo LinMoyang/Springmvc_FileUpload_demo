@@ -1,5 +1,7 @@
 package com.xiaolinzi.controller;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -22,7 +24,7 @@ public class UserController {
      */
     @RequestMapping("/fileupload1")
     public String fileupload1(HttpServletRequest request) throws Exception {
-        System.out.println("文件上传……");
+        System.out.println("传统方式文件上传……");
         //使用fileuoload组件完成上传
         //上传的位置
         String path = request.getSession().getServletContext().getRealPath("/uploads");
@@ -77,6 +79,28 @@ public class UserController {
         filename=uuid+"_"+filename;
         //完成文件上传
         upload.transferTo(new File(path,filename));
+        return "success";
+    }
+    /**
+     * 跨服务器的文件上传方式
+     * @return
+     */
+    @RequestMapping("/fileupload3")
+    public String fileupload3(MultipartFile upload) throws Exception {
+        System.out.println("跨服务器方式文件上传……");
+        //定义上传服务器路径
+        String path="http://localhost:9099/uploads/";
+        //说明上传文件项
+        //获取文件名称
+        String filename = upload.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        filename=uuid+"_"+filename;
+        //创建客户端对象
+        Client client = Client.create();
+        //和图片服务器进行连接
+        WebResource resource = client.resource(path+filename);
+        //上传文件
+        resource.put(upload.getBytes());
         return "success";
     }
 }

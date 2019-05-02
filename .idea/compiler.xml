@@ -7,10 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="springmvc_test_fileupload" />
+        <module name="fileuploadserver" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="fileuploadserver" target="1.5" />
+      <module name="fileuploadserver" target="1.7" />
       <module name="springmvc_test_fileupload" target="1.8" />
     </bytecodeTargetLevel>
   </component>
